@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 
 def plot_speis_nyquist(ax, z, scale=1, units='Ohms', fmt='.-', **kwargs):
     #Generate colormap
-    colors = plt.cm.autumn(np.linspace(0, 1, len(z)))
+    colors = plt.cm.get_cmap('RdYlGn')
 
     #Plot each point
     for i in range(len(z)):
-        ax.plot(z[i].real, -z[i].imag, fmt, color=colors[i], **kwargs)
+        ax.plot(z[i].real, -z[i].imag, fmt, color=colors(i/len(z)), **kwargs)
     ax.set_aspect('equal')
     ax.set_xlabel(r'$Z^{\prime}(\omega)$ ' +
                   '$[{}]$'.format(units), fontsize=20)
@@ -32,13 +32,14 @@ def plot_speis_nyquist(ax, z, scale=1, units='Ohms', fmt='.-', **kwargs):
 
 
 def plot_speis_bode(axes, f, z, scale=1, units='Ohms', fmt='.-', **kwargs):
-    colors = plt.cm.autumn(np.linspace(0, 1, len(z)))
+    #Generate colormap
+    colors = plt.cm.get_cmap('RdYlGn')
     ax_mag, ax_phs = axes
     for i in range(len(z)):
-        ax_mag.plot(f[i], np.abs(z[i]), fmt, color=colors[i], **kwargs)
-        ax_phs.plot(f[i], -np.angle(z[i], deg=True), fmt, color=colors[i], **kwargs)
-    ax_mag.plot(f, np.abs(z), fmt, **kwargs)
-    ax_phs.plot(f, -np.angle(z, deg=True), fmt, **kwargs)
+        ax_mag.plot(f[i], np.abs(z[i]), fmt, color=colors(i/len(z)), **kwargs)
+        ax_phs.plot(f[i], -np.angle(z[i], deg=True), fmt, color=colors(i/len(z)), **kwargs)
+    # ax_mag.plot(f, np.abs(z), fmt, **kwargs)
+    # ax_phs.plot(f, -np.angle(z, deg=True), fmt, **kwargs)
     ax_mag.set_ylabel(r'$|Z(\omega)|$ ' +
                       '$[{}]$'.format(units), fontsize=20)
     ax_phs.set_ylabel(r'$-\phi_Z(\omega)$ ' + r'$[^o]$', fontsize=20)

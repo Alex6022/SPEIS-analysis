@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+from impedance.visualization import plot_nyquist, plot_bode
 
 # The following helper function are modified variants of those implement in impedance.py to enable the meaningful
 # plotting of SPEIS data
@@ -64,17 +66,33 @@ def plot_speis_bode(axes, f, z, scale=1, units='Ohms', fmt='.-', **kwargs):
     y_offset.set_size(18)
     return axes
 
-# %TODO: Quick function to generate overview of the dataset with bode and nyquist plot
-# def plot_speis_overview(f, z):
-#     fig_overview, axs_overview = plt.subplots(ncols=2, nrows=2)
-#     fig_nyq, ax_nyq = plt.subplots()
-#     fig_bode, ax_bode = plt.subplots(nrows=2, figsize=(5, 5))
-#     ax_nyq = plot_speis_nyquist(ax_nyq, z)
-#     ax_bode = plot_speis_bode(ax_bode, f, z)
-#
-#     axs_overview[0, 2]
-#     gs = axs_overview[1, 2].get_gridspec()
-#     for ax in axs_overview[1:, -1]:
-#         ax.remove()
-#     axbig = fig.add_subplot(gs[1:, -1])
-#     plt.show()
+#Quick function to generate overview of the dataset with bode and nyquist plot
+def plot_speis_overview(f, z):
+    fig = plt.figure(constrained_layout=True, figsize=(12,5))
+    gs = fig.add_gridspec(2, 2)
+    f_ax1 = fig.add_subplot(gs[:, 0])
+    f_ax1.set_title("Nyquist plot")
+    f_ax2 = fig.add_subplot(gs[0, 1])
+    f_ax2.set_title("Bode plot")
+    f_ax3 = fig.add_subplot(gs[1, 1])
+    plot_speis_nyquist(f_ax1, z)
+    plot_speis_bode((f_ax2, f_ax3), f, z)
+    return gs
+    
+def plot_model_fit_overview(f_i, z_i, model):
+    #Generate plot data from fitted model
+    z_fit = model.predict(f_i)
+
+    fig = plt.figure(constrained_layout=True, figsize=(12,5))
+    gs = fig.add_gridspec(2, 2)
+    f_ax1 = fig.add_subplot(gs[:, 0])
+    f_ax1.set_title("Nyquist plot")
+    f_ax2 = fig.add_subplot(gs[0, 1])
+    f_ax2.set_title("Bode plot")
+    f_ax3 = fig.add_subplot(gs[1, 1])
+    plot_nyquist(f_ax1, z_i, fmt='o')
+    plot_nyquist(f_ax1, z_fit, fmt='-')
+    plot_bode((f_ax2, f_ax3), f_i, z_i, ls='', marker='s', label='Data')
+    plot_bode((f_ax2, f_ax3), f_i, z_fit, ls='-', marker='', label='Fit')
+    f_ax2.legend()
+    return gs

@@ -7,13 +7,15 @@ from impedance.visualization import plot_nyquist, plot_bode
 # plotting of SPEIS data
 
 
-def plot_speis_nyquist(ax, z, scale=1, units='Ohms', fmt='.-', **kwargs):
+def plot_speis_nyquist(ax, z, scale=1, units='Ohms', fmt='.-', cutoff=None, **kwargs):
     #Generate colormap
     colors = plt.cm.get_cmap('RdYlGn')
+    if cutoff == None:
+        cutoff = len(z)
 
     #Plot each point
     for i in range(len(z)):
-        ax.plot(z[i].real, -z[i].imag, fmt, color=colors(i/len(z)), **kwargs)
+        ax.plot(z[i][:cutoff].real, -z[i][:cutoff].imag, fmt, color=colors(i/len(z)), **kwargs)
     ax.set_aspect('equal')
     ax.set_xlabel(r'$Z^{\prime}(\omega)$ ' +
                   '$[{}]$'.format(units), fontsize=20)

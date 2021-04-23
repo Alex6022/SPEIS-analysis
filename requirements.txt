@@ -1,0 +1,5 @@
+impedance==1.2.2
+numpy==1.19.2
+matplotlib==3.3.4
+pandas==1.2.4
+ipython==7.22.0

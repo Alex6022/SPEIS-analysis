@@ -1,5 +1,5 @@
 # SPEIS-analysis
-Jupyter notebook leveraging impedance.py to simplify the batch analysis of staircase potential electrochemical impedance spectroscopy (SPEIS) data.
+Jupyter notebook leveraging impedance.py to simplify the batch analysis of staircase potential electrochemical impedance spectroscopy (SPEIS) data. Using the first cell, the filename of the mpt file located in the same directory as the notebook can be specified. Further parameters can be set using the input prompts in the notebook.
 
 ## Dependencies
 The notebook has been developed using the following environment
